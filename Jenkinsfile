@@ -8,17 +8,17 @@ environment {
     PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
 }
     stages {
-        stage('build') {
+        stage("build") {
             steps {
                 echo "------------build started---------"
                 sh 'mvn clean deploy -Dmaven.test.skip=true'
                 echo "-----------build completed--------"
             }
         }
-        stage('test'){
+        stage("test"){
             steps{
                 echo "------------unit test started-------"
-                sh 'mvn clean deply'
+                sh 'mvn surefire-report:report'
                 echo "----------unit test completed-------"
             }
         }
