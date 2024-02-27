@@ -25,11 +25,10 @@ environment {
         
     stage("SonarQube analysis") {
     environment {
-        scannerHome = tool 'sonar-scanner'
+        scannerHome = tool 'sonar-scanner-new'
     }
     steps {
-        script {
-            def scannerHome = tool 'sonar-scanner'
+    
             withSonarQubeEnv('sonarqube-server') {
                 sh "${scannerHome}/bin/sonar-scanner"
             }
@@ -37,7 +36,6 @@ environment {
     }
 }
 
-      }
 }
 
 
