@@ -30,7 +30,7 @@ environment {
     steps {
         script {
             def scannerHome = tool 'sonar-scanner'
-            withSonarQubeEnv('SonarQube') {
+            withSonarQubeEnv('Sonarqube-server') {
                 sh "${scannerHome}/bin/sonar-scanner"
             }
         }
