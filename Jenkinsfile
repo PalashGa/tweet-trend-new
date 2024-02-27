@@ -1,41 +1,39 @@
 pipeline {
     agent {
-        node{
+        node {
             label 'maven'
         }
     }
-environment {
-    PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
-}
-    stages {
-        stage("build") {
-            steps {
-                echo "------------build started---------"
-                sh 'mvn clean deploy -Dmaven.test.skip=true'
-                echo "-----------build completed--------"
-            }
-        }
-        stage("test"){
-            steps{
-                echo "------------unit test started-------"
-                sh 'mvn surefire-report:report'
-                echo "----------unit test completed-------"
-            }
-        }
-        
-    stage("SonarQube analysis") {
     environment {
-        scannerHome = tool 'sonar-scanner-new'
+        PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
     }
-    steps {
-    
-            withSonarQubeEnv('sonarqube-server') {
-                sh "${scannerHome}/bin/sonar-scanner"
+    stages {
+        stage("Build") {
+            steps {
+                echo "------------Build started---------"
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo "-----------Build completed--------"
+            }
+        }
+        stage("Test") {
+            steps {
+                echo "------------Unit test started-------"
+                sh 'mvn surefire-report:report'
+                echo "----------Unit test completed-------"
+            }
+        }
+        stage("SonarQube Analysis") {
+            environment {
+                scannerHome = tool 'sonar-scanner-new'
+            }
+            steps {
+                script {
+                    def scannerHome = tool 'sonar-scanner-new'
+                    withSonarQubeEnv('sonarqube-server') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
             }
         }
     }
 }
-
-}
-
-
