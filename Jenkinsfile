@@ -27,12 +27,12 @@ pipeline {
                 scannerHome = tool 'sonar-scanner-new'
             }
             steps {
-                script {
-                    def scannerHome = tool 'sonar-scanner-new'
-                    withSonarQubeEnv('sonarqube-server') {
+            
+            withSonarQubeEnv('sonarqube-server') {
                         sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
+                    }    
+                    
+                
             }
         }
     }
