@@ -22,17 +22,28 @@ pipeline {
                 echo "----------Unit test completed-------"
             }
         }
-        stage("SonarQube Analysis") {
-            environment {
-                scannerHome = tool 'sonar-scanner-new'
+        
+        def imageName = 'sourabh77.jfrog.io/valaxy-docker-local/ttrend'
+	    def version   = '2.1.2'
+        stage(" Docker Build ") {
+          steps {
+            script {
+               echo '<--------------- Docker Build Started --------------->'
+               app = docker.build(imageName+":"+version)
+               echo '<--------------- Docker Build Ends --------------->'
             }
+          }
+        }
+
+            stage (" Docker Publish "){
             steps {
-            
-            withSonarQubeEnv('sonarqube-server') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                script {
+                   echo '<--------------- Docker Publish Started --------------->'  
+                    docker.withRegistry(registry, 'artifact-cred'){
+                        app.push()
                     }    
-                    
-                
+                   echo '<--------------- Docker Publish Ended --------------->'  
+                }
             }
         }
     }
