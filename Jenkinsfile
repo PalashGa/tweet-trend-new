@@ -31,7 +31,8 @@ pipeline {
           steps {
             script {
                echo '<--------------- Docker Build Started --------------->'
-               app = docker.build(imageName+":"+version)
+               //app = docker.build(imageName+":"+version)
+               DOCKER_BUILDKIT=1 docker build -t sourabh77.jfrog.io/valaxy-docker-local/ttrend:2.1.2
                echo '<--------------- Docker Build Ends --------------->'
             }
           }
